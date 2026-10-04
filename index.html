@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kemasukan Markah Pelajar</title>
+    <style>
+        :root {
+            --petronas-emerald: #00A396;
+            --petronas-dark: #002B2B;
+            --petronas-light: #E6F5F4;
+            --accent-gray: #F4F6F8;
+            --text-color: #2C3E50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--accent-gray);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: var(--petronas-dark);
+            border-bottom: 5px solid var(--petronas-emerald);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+            color: var(--petronas-light);
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 12px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        #inputMatric {
+            text-transform: uppercase;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: var(--petronas-emerald);
+            outline: none;
+        }
+
+        .btn {
+            background-color: var(--petronas-emerald);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #008278;
+        }
+
+        .btn-print {
+            background-color: var(--petronas-dark);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-right: 10px;
+        }
+
+        .btn-print:hover {
+            background-color: #001a1a;
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            border-bottom: 2px solid var(--petronas-light);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 140px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 3px solid var(--petronas-emerald);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-details-grid {
+            display: grid;
+            grid-template-columns: 160px 15px auto;
+            align-items: center;
+            row-gap: 10px;
+        }
+
+        .profile-label {
+            font-weight: bold;
+            font-size: 15px;
+            color: var(--petronas-dark);
+        }
+
+        .profile-colon {
+            font-weight: bold;
+            font-size: 15px;
+            color: var(--petronas-dark);
+            text-align: center;
+        }
+
+        .profile-badge {
+            background-color: var(--petronas-light);
+            color: var(--petronas-dark);
+            font-weight: 700;
+            font-size: 15px;
+            padding: 4px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--petronas-emerald);
+            letter-spacing: 0.5px;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .set-header-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 2fr;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            background-color: var(--petronas-dark);
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            border-radius: 6px 6px 0 0;
+            letter-spacing: 0.5px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .set-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 2fr;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            border-bottom: 1px solid #EEE;
+        }
+
+        .set-row:nth-child(even) {
+            background-color: #FAFAFA;
+        }
+
+        .mark-input {
+            width: 80px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .grade-badge {
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            text-align: center;
+            width: 45px;
+            background-color: var(--petronas-light);
+            color: var(--petronas-dark);
+        }
+
+        .timestamp {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .alert {
+            padding: 15px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 13px;
+            font-style: italic;
+            color: #666;
+            background-color: white;
+            border-top: 1px solid #E0E0E0;
+            margin-top: 30px;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+            }
+            .header, .search-card, .btn-action-container, .footer {
+                display: none !important;
+            }
+            .container {
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            .card {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+            }
+            input[type="number"] {
+                border: none;
+                background: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>PORTAL KEMASUKAN MARKAH WOW PROGRAM</h1>
+        <p>KOLEJ MATRIKULASI JOHOR</p>
+    </div>
+
+    <div class="container">
+        <!-- Carian Pelajar -->
+        <div class="card search-card">
+            <h2>Sila Masukkan No. Matrik</h2>
+            <div class="search-box">
+                <input type="text" id="inputMatric" placeholder="Contoh: MS2616116123" style="flex: 1;" oninput="this.value = this.value.toUpperCase()">
+                <button class="btn" onclick="searchStudent()">Cari Pelajar</button>
+            </div>
+            <div id="searchAlert" class="alert hidden">No. Matrik tidak dijumpai dalam rekod database!</div>
+        </div>
+
+        <!-- Paparan Dashboard & Input Markah -->
+        <div id="dashboardSection" class="card hidden">
+            <!-- Profil -->
+            <div class="profile-container">
+                <img id="studentPhoto" src="" alt="Gambar Pelajar" class="profile-img">
+                <div class="profile-info">
+                    <div class="profile-details-grid">
+                        <div class="profile-label">NAMA PELAJAR</div>
+                        <div class="profile-colon">:</div>
+                        <div><span id="studentName" class="profile-badge">-</span></div>
+
+                        <div class="profile-label">NO. MATRIK</div>
+                        <div class="profile-colon">:</div>
+                        <div><span id="studentMatric" class="profile-badge">-</span></div>
+
+                        <div class="profile-label">PRAKTIKUM</div>
+                        <div class="profile-colon">:</div>
+                        <div><span id="studentPraktikum" class="profile-badge">-</span></div>
+
+                        <div class="profile-label">NAMA PENSYARAH</div>
+                        <div class="profile-colon">:</div>
+                        <div><span class="profile-badge">ABDUL RAZAK BIN AZIT</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Senarai Markah Dinamik Mengikut Google Sheet -->
+            <h2>Kemaskini Markah Pelajar</h2>
+            
+            <div class="set-header-row">
+                <div class="text-center">SET / PENILAIAN</div>
+                <div class="text-center">MARKAH</div>
+                <div class="text-center">GRED</div>
+                <div>TARIKH DAN MASA MASUK MARKAH</div>
+            </div>
+
+            <div id="marksForm">
+                <!-- Dibina secara dinamik daripada Google Sheet -->
+            </div>
+
+            <div class="btn-action-container" style="margin-top: 25px; text-align: right;">
+                <button class="btn-print" onclick="window.print()">🖨️ Cetak Slip Markah</button>
+                <button class="btn" id="saveBtn" onclick="saveMarks()">Simpan Semua Markah</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Hak Cipta Terpelihara ARZK
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx01HGltoPzupus9vG7cKrrX5RUOVoR75LKvb3VVyw_YMfwhaEIP0sx3QEf6xZpZece/exec";
+
+        let currentStudentData = null;
+
+        function calculateGrade(mark) {
+            if (mark === "" || mark === null || isNaN(mark)) return "-";
+            let m = parseFloat(mark);
+            if (m >= 80) return "A";
+            if (m >= 75) return "A-";
+            if (m >= 70) return "B+";
+            if (m >= 65) return "B";
+            if (m >= 60) return "B-";
+            if (m >= 55) return "C+";
+            if (m >= 50) return "C";
+            if (m >= 45) return "C-";
+            if (m >= 40) return "D+";
+            if (m >= 35) return "D";
+            return "F";
+        }
+
+        function formatDriveImageUrl(url) {
+            if (!url) return 'https://via.placeholder.com/150';
+            if (url.includes("drive.google.com")) {
+                let idMatch = url.match(/id=([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (idMatch && idMatch[1]) {
+                    return `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
+                }
+            }
+            return url;
+        }
+
+        async function searchStudent() {
+            const matric = document.getElementById("inputMatric").value.trim().toUpperCase();
+            const alertBox = document.getElementById("searchAlert");
+            const dashboard = document.getElementById("dashboardSection");
+
+            if (!matric) {
+                alert("Sila masukkan No. Matrik terlebih dahulu!");
+                return;
+            }
+
+            alertBox.classList.add("hidden");
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getStudent&matric=${encodeURIComponent(matric)}`);
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    currentStudentData = result.data;
+                    renderDashboard(result.data);
+                    dashboard.classList.remove("hidden");
+                } else {
+                    dashboard.classList.add("hidden");
+                    alertBox.classList.remove("hidden");
+                }
+            } catch (err) {
+                alert("Ralat semasa berhubung dengan database. Pastikan URL Web App telah di-deploy semula dengan akses 'Anyone'.");
+                console.error(err);
+            }
+        }
+
+        function renderDashboard(data) {
+            document.getElementById("studentPhoto").src = formatDriveImageUrl(data.photo);
+            document.getElementById("studentName").innerText = (data.name || '').toUpperCase();
+            document.getElementById("studentMatric").innerText = (data.matric || '').toUpperCase();
+            document.getElementById("studentPraktikum").innerText = (data.praktikum || '').toUpperCase();
+
+            const formContainer = document.getElementById("marksForm");
+            formContainer.innerHTML = "";
+
+            // Membina baris secara dinamik berdasarkan tajuk lajur dari Google Sheet
+            data.items.forEach((item) => {
+                const colIdx = item.colIndex;
+                const scoreObj = data.scores[colIdx] || { mark: "", grade: "-", time: "" };
+
+                const row = document.createElement("div");
+                row.className = "set-row";
+                row.innerHTML = `
+                    <div class="text-center"><strong>${item.label} (PER 100)</strong></div>
+                    <div class="text-center">
+                        <input type="number" id="input_col_${colIdx}" class="mark-input" min="0" max="100" value="${scoreObj.mark}" 
+                            oninput="updateGradeDisplay(${colIdx})" placeholder="0-100">
+                    </div>
+                    <div class="text-center">
+                        <span id="grade_col_${colIdx}" class="grade-badge">${calculateGrade(scoreObj.mark)}</span>
+                    </div>
+                    <div class="timestamp" id="time_col_${colIdx}">
+                        ${scoreObj.time ? `Dikemaskini: ${scoreObj.time}` : 'Belum dimasukkan'}
+                    </div>
+                `;
+                formContainer.appendChild(row);
+            });
+        }
+
+        function updateGradeDisplay(colIdx) {
+            const val = document.getElementById(`input_col_${colIdx}`).value;
+            document.getElementById(`grade_col_${colIdx}`).innerText = calculateGrade(val);
+        }
+
+        async function saveMarks() {
+            if (!currentStudentData) return;
+
+            const saveBtn = document.getElementById("saveBtn");
+            saveBtn.innerText = "Menyimpan...";
+            saveBtn.disabled = true;
+
+            const now = new Date().toLocaleString("ms-MY");
+            let payload = {
+                matric: currentStudentData.matric.toUpperCase(),
+                scores: {}
+            };
+
+            currentStudentData.items.forEach((item) => {
+                const colIdx = item.colIndex;
+                const inputVal = document.getElementById(`input_col_${colIdx}`).value;
+                const calculatedGrade = calculateGrade(inputVal);
+                const oldTime = currentStudentData.scores[colIdx] ? currentStudentData.scores[colIdx].time : "";
+
+                payload.scores[colIdx] = {
+                    mark: inputVal,
+                    grade: calculatedGrade,
+                    time: inputVal !== "" ? now : oldTime
+                };
+
+                if (inputVal !== "") {
+                    document.getElementById(`time_col_${colIdx}`).innerText = `Dikemaskini: ${now}`;
+                }
+            });
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+                
+                const resData = await response.json();
+                if (resData.status === "success") {
+                    alert("Markah, Gred, dan Tarikh/Masa berjaya disimpan ke dalam Google Sheets!");
+                } else {
+                    alert("Ralat semasa menyimpan markah ke database.");
+                }
+            } catch (err) {
+                alert("Gagal menyimpan markah. Sila semak sambungan internet/URL Web App.");
+                console.error(err);
+            } finally {
+                saveBtn.innerText = "Simpan Semua Markah";
+                saveBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
