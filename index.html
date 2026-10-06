@@ -13,6 +13,10 @@
             --text-color: #2C3E50;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--accent-gray);
@@ -22,44 +26,50 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         .header {
             background-color: var(--petronas-dark);
             border-bottom: 5px solid var(--petronas-emerald);
             color: white;
-            padding: 20px;
+            padding: 20px 15px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            width: 100%;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 22px;
             letter-spacing: 1px;
+            word-wrap: break-word;
         }
 
         .header p {
             margin: 5px 0 0 0;
-            font-size: 14px;
-            letter-spacing: 1.5px;
+            font-size: 13px;
+            letter-spacing: 1.2px;
             color: var(--petronas-light);
             font-weight: 500;
         }
 
         .container {
+            width: 100%;
             max-width: 900px;
-            margin: 30px auto;
-            padding: 0 20px;
+            margin: 20px auto;
+            padding: 0 15px;
             flex: 1;
         }
 
         .card {
             background: white;
             border-radius: 10px;
-            padding: 25px;
+            padding: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            width: 100%;
         }
 
         .search-box {
@@ -74,6 +84,7 @@
             border-radius: 6px;
             font-size: 15px;
             transition: all 0.3s;
+            width: 100%;
         }
 
         #inputMatric {
@@ -89,12 +100,13 @@
             background-color: var(--petronas-emerald);
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 12px 20px;
             font-size: 15px;
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.3s;
+            white-space: nowrap;
         }
 
         .btn:hover {
@@ -105,7 +117,7 @@
             background-color: var(--petronas-dark);
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 12px 20px;
             font-size: 15px;
             font-weight: bold;
             border-radius: 6px;
@@ -121,41 +133,43 @@
         .profile-container {
             display: flex;
             align-items: center;
-            gap: 25px;
+            gap: 20px;
             border-bottom: 2px solid var(--petronas-light);
             padding-bottom: 20px;
             margin-bottom: 20px;
         }
 
         .profile-img {
-            width: 120px;
-            height: 140px;
+            width: 110px;
+            height: 130px;
             border-radius: 8px;
             object-fit: cover;
             border: 3px solid var(--petronas-emerald);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
 
         .profile-info {
             flex: 1;
+            width: 100%;
         }
 
         .profile-details-grid {
             display: grid;
-            grid-template-columns: 160px 15px auto;
+            grid-template-columns: 140px 15px auto;
             align-items: center;
             row-gap: 10px;
         }
 
         .profile-label {
             font-weight: bold;
-            font-size: 15px;
+            font-size: 14px;
             color: var(--petronas-dark);
         }
 
         .profile-colon {
             font-weight: bold;
-            font-size: 15px;
+            font-size: 14px;
             color: var(--petronas-dark);
             text-align: center;
         }
@@ -164,20 +178,26 @@
             background-color: var(--petronas-light);
             color: var(--petronas-dark);
             font-weight: 700;
-            font-size: 15px;
-            padding: 4px 12px;
+            font-size: 14px;
+            padding: 4px 10px;
             border-radius: 5px;
             border: 1px solid var(--petronas-emerald);
             letter-spacing: 0.5px;
             display: inline-block;
-            width: fit-content;
+            word-break: break-word;
+        }
+
+        /* Container untuk jadual markah supaya boleh di-scroll jika perlu */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
         }
 
         .set-header-row {
             display: grid;
             grid-template-columns: 1.5fr 1fr 1fr 2fr;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             padding: 12px;
             background-color: var(--petronas-dark);
             color: white;
@@ -185,6 +205,7 @@
             font-size: 13px;
             border-radius: 6px 6px 0 0;
             letter-spacing: 0.5px;
+            min-width: 500px;
         }
 
         .text-center {
@@ -195,9 +216,10 @@
             display: grid;
             grid-template-columns: 1.5fr 1fr 1fr 2fr;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             padding: 12px;
             border-bottom: 1px solid #EEE;
+            min-width: 500px;
         }
 
         .set-row:nth-child(even) {
@@ -205,24 +227,26 @@
         }
 
         .mark-input {
-            width: 80px;
+            width: 70px;
             text-align: center;
             font-weight: bold;
+            margin: 0 auto;
+            display: block;
         }
 
         .grade-badge {
             font-weight: bold;
-            padding: 5px 12px;
+            padding: 5px 10px;
             border-radius: 4px;
             display: inline-block;
             text-align: center;
-            width: 45px;
+            width: 40px;
             background-color: var(--petronas-light);
             color: var(--petronas-dark);
         }
 
         .timestamp {
-            font-size: 13px;
+            font-size: 12px;
             color: #666;
         }
 
@@ -247,8 +271,76 @@
             background-color: white;
             border-top: 1px solid #E0E0E0;
             margin-top: 30px;
+            width: 100%;
         }
 
+        /* =========================================================
+           ATURAN KHAS UNTUK SKRIN TELEFON PINTAR (RESPONSIVE MOBILE)
+           ========================================================= */
+        @media screen and (max-width: 600px) {
+            .header h1 {
+                font-size: 18px;
+            }
+            
+            .header p {
+                font-size: 12px;
+            }
+
+            .container {
+                padding: 0 10px;
+                margin: 15px auto;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            /* Tukar carian kepada susunan tegak */
+            .search-box {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            /* Profil pelajar pada skrin kecil */
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-img {
+                margin: 0 auto;
+            }
+
+            .profile-details-grid {
+                grid-template-columns: 1fr;
+                row-gap: 5px;
+                text-align: center;
+            }
+
+            .profile-colon {
+                display: none; /* Sembunyikan titik bertindih pada skrin telefon */
+            }
+
+            .profile-label {
+                margin-top: 8px;
+            }
+
+            .btn-action-container {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn-print {
+                margin-right: 0;
+                width: 100%;
+            }
+        }
+
+        /* Tetapan Gaya Cetakan */
         @media print {
             body {
                 background-color: white;
@@ -283,9 +375,9 @@
     <div class="container">
         <!-- Carian Pelajar -->
         <div class="card search-card">
-            <h2>Sila Masukkan No. Matrik</h2>
+            <h2 style="font-size: 18px; margin-top: 0;">Sila Masukkan No. Matrik</h2>
             <div class="search-box">
-                <input type="text" id="inputMatric" placeholder="Contoh: MS2616116123" style="flex: 1;" oninput="this.value = this.value.toUpperCase()">
+                <input type="text" id="inputMatric" placeholder="Contoh: MS2616116123" oninput="this.value = this.value.toUpperCase()">
                 <button class="btn" onclick="searchStudent()">Cari Pelajar</button>
             </div>
             <div id="searchAlert" class="alert hidden">No. Matrik tidak dijumpai dalam rekod database!</div>
@@ -318,17 +410,20 @@
             </div>
 
             <!-- Senarai Markah Dinamik Mengikut Google Sheet -->
-            <h2>Kemaskini Markah Pelajar</h2>
+            <h2 style="font-size: 18px;">Kemaskini Markah Pelajar</h2>
             
-            <div class="set-header-row">
-                <div class="text-center">SET / PENILAIAN</div>
-                <div class="text-center">MARKAH</div>
-                <div class="text-center">GRED</div>
-                <div>TARIKH DAN MASA MASUK MARKAH</div>
-            </div>
+            <!-- Pembungkus jadual mesra skrin telefon -->
+            <div class="table-responsive">
+                <div class="set-header-row">
+                    <div class="text-center">SET / PENILAIAN</div>
+                    <div class="text-center">MARKAH</div>
+                    <div class="text-center">GRED</div>
+                    <div>TARIKH DAN MASA MASUK MARKAH</div>
+                </div>
 
-            <div id="marksForm">
-                <!-- Dibina secara dinamik daripada Google Sheet -->
+                <div id="marksForm">
+                    <!-- Dibina secara dinamik daripada Google Sheet -->
+                </div>
             </div>
 
             <div class="btn-action-container" style="margin-top: 25px; text-align: right;">
@@ -413,7 +508,6 @@
             const formContainer = document.getElementById("marksForm");
             formContainer.innerHTML = "";
 
-            // Membina baris secara dinamik berdasarkan tajuk lajur dari Google Sheet
             data.items.forEach((item) => {
                 const colIdx = item.colIndex;
                 const scoreObj = data.scores[colIdx] || { mark: "", grade: "-", time: "" };
