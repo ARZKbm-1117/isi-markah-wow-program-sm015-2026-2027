@@ -12,6 +12,7 @@
             --accent-gray: #F4F6F8;
             --text-color: #2C3E50;
             --pdf-red: #D9534F;
+            --pdf-red-hover: #C9302C;
         }
 
         * {
@@ -114,24 +115,35 @@
             background-color: #008278;
         }
 
-        .btn-pdf {
+        /* Rekabentuk Butang / Icon PDF Profesional */
+        .btn-pdf-pro {
             background-color: var(--pdf-red);
-            color: white;
+            color: white !important;
             border: none;
-            padding: 8px 14px;
+            padding: 7px 14px;
             font-size: 13px;
-            font-weight: bold;
-            border-radius: 5px;
+            font-weight: 600;
+            border-radius: 6px;
             cursor: pointer;
-            text-decoration: none;
+            text-decoration: none !important;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            transition: background 0.3s;
+            gap: 8px;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(217, 83, 79, 0.3);
         }
 
-        .btn-pdf:hover {
-            background-color: #c9302c;
+        .btn-pdf-pro:hover {
+            background-color: var(--pdf-red-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(201, 48, 44, 0.4);
+        }
+
+        .btn-pdf-pro svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            flex-shrink: 0;
         }
 
         .btn-print {
@@ -262,6 +274,15 @@
             display: block;
         }
 
+        /* Styling untuk kotak input markah yang dikunci (TRIAL 1) */
+        .mark-input:disabled {
+            background-color: #E9ECEF;
+            color: #495057;
+            border: 1px solid #CED4DA;
+            cursor: not-allowed;
+            opacity: 0.85;
+        }
+
         .grade-badge {
             font-weight: bold;
             padding: 5px 10px;
@@ -330,7 +351,7 @@
 <body>
 
     <div class="header">
-        <h1>PORTAL KEMASUKAN MARKAH TRIAL DAN PROGRAM WOW</h1>
+        <h1>PORTAL KEMASUKAN MARKAH WOW PROGRAM</h1>
         <p>KOLEJ MATRIKULASI JOHOR</p>
     </div>
 
@@ -413,10 +434,12 @@
     </div>
 
     <script>
-        // MASUKKAN PAUTAN WEB APP ANDA DI SINI
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxSD2LaVAkKCs80RZ6HcypJtHQ5VuHVmg7Ff-0yfThwvfP_xxf6VX72nGud5fTqzcY/exec";
 
         let currentStudentData = null;
+
+        // Ikon PDF profesional berbentuk SVG
+        const pdfSvgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M181.9 256.1c-5.2-16-15.5-29.9-29.9-39.6 12.4-23.3 22-48.4 28.5-74.8 13.9 12.3 32 20.3 52.1 21.6 1.5 8.1 2.3 16.5 2.3 25.1 0 35.1-13.9 67.9-38.3 92.5-4.8-8.2-10-16.5-14.7-24.8zM288 32c0-17.7-14.3-32-32-32H32C14.3 0 0 14.3 0 32v448c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V128L288 32zM160 432c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm144-112c-20.9 0-40.6-5.8-57.8-15.9 31.9-32.5 51.8-76.4 51.8-124.1 0-14.1-1.7-27.8-4.8-40.9 18.5-2.2 35.2-9.9 48.8-21.7V400c0 8.8-7.2 16-16 16h-22c-8.8 0-16-7.2-16-16v-80z"/></svg>`;
 
         function calculateGrade(mark) {
             if (mark === "" || mark === null || isNaN(mark)) return "-";
@@ -481,16 +504,26 @@
             document.getElementById("studentMatric").innerText = (data.matric || '').toUpperCase();
             document.getElementById("studentPraktikum").innerText = (data.praktikum || '').toUpperCase();
 
+            // Pautan Soalan Trial - Diganti dengan Ikon PDF Profesional
             const trialContainer = document.getElementById("trialQuestionContainer");
             if (data.trialQuestionLink && data.trialQuestionLink.trim() !== "") {
-                trialContainer.innerHTML = `<a href="${data.trialQuestionLink}" target="_blank" class="btn-pdf">📕 Buka Soalan (PDF)</a>`;
+                trialContainer.innerHTML = `
+                    <a href="${data.trialQuestionLink}" target="_blank" class="btn-pdf-pro" title="Buka Soalan PDF">
+                        ${pdfSvgIcon}
+                        <span>Soalan Trial PSPSM 1 (PDF)</span>
+                    </a>`;
             } else {
                 trialContainer.innerHTML = `<span style="font-size: 13px; color: #888;">Tiada Pautan Soalan</span>`;
             }
 
+            // Status Jawapan PDF Pelajar - Diganti dengan Ikon PDF Profesional
             const pdfStatus = document.getElementById("pdfStatus");
             if (data.answerPdfLink && data.answerPdfLink.trim() !== "") {
-                pdfStatus.innerHTML = `Jawapan Pelajar Terkini: <a href="${data.answerPdfLink}" target="_blank" class="btn-pdf" style="padding:4px 8px; font-size:12px;">📄 Lihat Jawapan (PDF)</a>`;
+                pdfStatus.innerHTML = `Jawapan Pelajar Terkini: 
+                    <a href="${data.answerPdfLink}" target="_blank" class="btn-pdf-pro" style="padding: 4px 10px; font-size: 12px; margin-left: 5px;">
+                        ${pdfSvgIcon}
+                        <span>Lihat Jawapan (PDF)</span>
+                    </a>`;
             } else {
                 pdfStatus.innerHTML = `<span style="color: #666;">Belum ada jawapan PDF dimuat naik.</span>`;
             }
@@ -507,12 +540,18 @@
                 const colIdx = item.colIndex;
                 const scoreObj = data.scores[colIdx] || { mark: "", grade: "-", time: "" };
 
+                // Semak jika tajuk baris mengandungi "TRIAL 1"
+                const isTrial1 = item.label.toUpperCase().includes("TRIAL 1");
+                const disabledAttr = isTrial1 ? 'disabled="disabled"' : '';
+                const lockTooltip = isTrial1 ? 'title="Markah Trial 1 dikunci dan diisi oleh pensyarah sahaja"' : '';
+
                 const row = document.createElement("div");
                 row.className = "set-row";
                 row.innerHTML = `
                     <div class="text-center"><strong>${item.label.toUpperCase()} (PER 100)</strong></div>
                     <div class="text-center">
-                        <input type="number" id="input_col_${colIdx}" class="mark-input" min="0" max="100" value="${scoreObj.mark}" 
+                        <input type="number" id="input_col_${colIdx}" class="mark-input" min="0" max="100" 
+                            value="${scoreObj.mark}" ${disabledAttr} ${lockTooltip}
                             oninput="updateGradeDisplay(${colIdx})" placeholder="0-100">
                     </div>
                     <div class="text-center">
@@ -572,7 +611,11 @@
                     
                     const res = await response.json();
                     if (res.status === "success") {
-                        pdfStatus.innerHTML = `✅ Berjaya dimuat naik! <a href="${res.pdfUrl}" target="_blank" class="btn-pdf" style="padding:4px 8px; font-size:12px;">📄 Lihat Jawapan PDF</a>`;
+                        pdfStatus.innerHTML = `✅ Berjaya dimuat naik! 
+                            <a href="${res.pdfUrl}" target="_blank" class="btn-pdf-pro" style="padding: 4px 10px; font-size: 12px; margin-left: 5px;">
+                                ${pdfSvgIcon}
+                                <span>Lihat Jawapan (PDF)</span>
+                            </a>`;
                         currentStudentData.answerPdfLink = res.pdfUrl;
                     } else {
                         pdfStatus.innerHTML = "❌ Gagal memuat naik PDF: " + (res.message || "Ralat tidak diketahui");
