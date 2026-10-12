@@ -11,6 +11,7 @@
             --petronas-light: #E6F5F4;
             --accent-gray: #F4F6F8;
             --text-color: #2C3E50;
+            --pdf-red: #D9534F;
         }
 
         * {
@@ -78,7 +79,7 @@
             margin-top: 15px;
         }
 
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], input[type="file"] {
             padding: 12px;
             border: 2px solid #DDD;
             border-radius: 6px;
@@ -111,6 +112,26 @@
 
         .btn:hover {
             background-color: #008278;
+        }
+
+        .btn-pdf {
+            background-color: var(--pdf-red);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.3s;
+        }
+
+        .btn-pdf:hover {
+            background-color: #c9302c;
         }
 
         .btn-print {
@@ -156,7 +177,7 @@
 
         .profile-details-grid {
             display: grid;
-            grid-template-columns: 140px 15px auto;
+            grid-template-columns: 160px 15px auto;
             align-items: center;
             row-gap: 10px;
         }
@@ -187,7 +208,14 @@
             word-break: break-word;
         }
 
-        /* Container untuk jadual markah supaya boleh di-scroll jika perlu */
+        .upload-section {
+            background-color: #f8f9fa;
+            border: 2px dashed #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -274,94 +302,28 @@
             width: 100%;
         }
 
-        /* =========================================================
-           ATURAN KHAS UNTUK SKRIN TELEFON PINTAR (RESPONSIVE MOBILE)
-           ========================================================= */
         @media screen and (max-width: 600px) {
-            .header h1 {
-                font-size: 18px;
-            }
-            
-            .header p {
-                font-size: 12px;
-            }
-
-            .container {
-                padding: 0 10px;
-                margin: 15px auto;
-            }
-
-            .card {
-                padding: 15px;
-            }
-
-            /* Tukar carian kepada susunan tegak */
-            .search-box {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            /* Profil pelajar pada skrin kecil */
-            .profile-container {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .profile-img {
-                margin: 0 auto;
-            }
-
-            .profile-details-grid {
-                grid-template-columns: 1fr;
-                row-gap: 5px;
-                text-align: center;
-            }
-
-            .profile-colon {
-                display: none; /* Sembunyikan titik bertindih pada skrin telefon */
-            }
-
-            .profile-label {
-                margin-top: 8px;
-            }
-
-            .btn-action-container {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .btn-print {
-                margin-right: 0;
-                width: 100%;
-            }
+            .header h1 { font-size: 18px; }
+            .header p { font-size: 12px; }
+            .container { padding: 0 10px; margin: 15px auto; }
+            .card { padding: 15px; }
+            .search-box { flex-direction: column; }
+            .btn { width: 100%; }
+            .profile-container { flex-direction: column; text-align: center; }
+            .profile-img { margin: 0 auto; }
+            .profile-details-grid { grid-template-columns: 1fr; row-gap: 5px; text-align: center; }
+            .profile-colon { display: none; }
+            .profile-label { margin-top: 8px; }
+            .btn-action-container { display: flex; flex-direction: column; gap: 10px; }
+            .btn-print { margin-right: 0; width: 100%; }
         }
 
-        /* Tetapan Gaya Cetakan */
         @media print {
-            body {
-                background-color: white;
-            }
-            .header, .search-card, .btn-action-container, .footer {
-                display: none !important;
-            }
-            .container {
-                max-width: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            .card {
-                box-shadow: none;
-                border: none;
-                padding: 0;
-            }
-            input[type="number"] {
-                border: none;
-                background: transparent;
-            }
+            body { background-color: white; }
+            .header, .search-card, .btn-action-container, .footer, .upload-section { display: none !important; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .card { box-shadow: none; border: none; padding: 0; }
+            input[type="number"] { border: none; background: transparent; }
         }
     </style>
 </head>
@@ -380,12 +342,12 @@
                 <input type="text" id="inputMatric" placeholder="Contoh: MS2616116123" oninput="this.value = this.value.toUpperCase()">
                 <button class="btn" onclick="searchStudent()">Cari Pelajar</button>
             </div>
-            <div id="searchAlert" class="alert hidden">No. Matrik tidak dijumpai dalam rekod database!</div>
+            <div id="searchAlert" class="alert hidden">No. Matrik tidak dijumpai dalam rekod database! Sila pastikan format matrik adalah betul.</div>
         </div>
 
         <!-- Paparan Dashboard & Input Markah -->
         <div id="dashboardSection" class="card hidden">
-            <!-- Profil -->
+            <!-- Profil Pelajar -->
             <div class="profile-container">
                 <img id="studentPhoto" src="" alt="Gambar Pelajar" class="profile-img">
                 <div class="profile-info">
@@ -405,14 +367,29 @@
                         <div class="profile-label">NAMA PENSYARAH</div>
                         <div class="profile-colon">:</div>
                         <div><span class="profile-badge">ABDUL RAZAK BIN AZIT</span></div>
+
+                        <div class="profile-label">SOALAN TRIAL PSPSM 1</div>
+                        <div class="profile-colon">:</div>
+                        <div id="trialQuestionContainer">
+                            <span style="font-size: 13px; color: #888;">Tiada Pautan</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Senarai Markah Dinamik Mengikut Google Sheet -->
+            <!-- Petak Muat Naik Jawapan Trial Pelajar (PDF) -->
+            <div class="upload-section">
+                <h3 style="margin-top:0; font-size:16px;">📄 Muat Naik Jawapan Trial Pelajar (PDF)</h3>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <input type="file" id="pdfFileInput" accept="application/pdf" style="max-width: 350px;">
+                    <button class="btn" id="uploadPdfBtn" onclick="uploadStudentAnswerPdf()">Muat Naik & Simpan Link</button>
+                </div>
+                <div id="pdfStatus" style="margin-top: 10px; font-size: 14px;"></div>
+            </div>
+
+            <!-- Jadual Markah Dinamik (SET 1, SET 2, SET 3...) -->
             <h2 style="font-size: 18px;">Kemaskini Markah Pelajar</h2>
             
-            <!-- Pembungkus jadual mesra skrin telefon -->
             <div class="table-responsive">
                 <div class="set-header-row">
                     <div class="text-center">SET / PENILAIAN</div>
@@ -421,9 +398,7 @@
                     <div>TARIKH DAN MASA MASUK MARKAH</div>
                 </div>
 
-                <div id="marksForm">
-                    <!-- Dibina secara dinamik daripada Google Sheet -->
-                </div>
+                <div id="marksForm"></div>
             </div>
 
             <div class="btn-action-container" style="margin-top: 25px; text-align: right;">
@@ -438,7 +413,8 @@
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx01HGltoPzupus9vG7cKrrX5RUOVoR75LKvb3VVyw_YMfwhaEIP0sx3QEf6xZpZece/exec";
+        // MASUKKAN PAUTAN WEB APP ANDA DI SINI
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxSD2LaVAkKCs80RZ6HcypJtHQ5VuHVmg7Ff-0yfThwvfP_xxf6VX72nGud5fTqzcY/exec";
 
         let currentStudentData = null;
 
@@ -494,7 +470,7 @@
                     alertBox.classList.remove("hidden");
                 }
             } catch (err) {
-                alert("Ralat semasa berhubung dengan database. Pastikan URL Web App telah di-deploy semula dengan akses 'Anyone'.");
+                alert("Ralat semasa berhubung dengan database.");
                 console.error(err);
             }
         }
@@ -505,8 +481,27 @@
             document.getElementById("studentMatric").innerText = (data.matric || '').toUpperCase();
             document.getElementById("studentPraktikum").innerText = (data.praktikum || '').toUpperCase();
 
+            const trialContainer = document.getElementById("trialQuestionContainer");
+            if (data.trialQuestionLink && data.trialQuestionLink.trim() !== "") {
+                trialContainer.innerHTML = `<a href="${data.trialQuestionLink}" target="_blank" class="btn-pdf">📕 Buka Soalan (PDF)</a>`;
+            } else {
+                trialContainer.innerHTML = `<span style="font-size: 13px; color: #888;">Tiada Pautan Soalan</span>`;
+            }
+
+            const pdfStatus = document.getElementById("pdfStatus");
+            if (data.answerPdfLink && data.answerPdfLink.trim() !== "") {
+                pdfStatus.innerHTML = `Jawapan Pelajar Terkini: <a href="${data.answerPdfLink}" target="_blank" class="btn-pdf" style="padding:4px 8px; font-size:12px;">📄 Lihat Jawapan (PDF)</a>`;
+            } else {
+                pdfStatus.innerHTML = `<span style="color: #666;">Belum ada jawapan PDF dimuat naik.</span>`;
+            }
+
             const formContainer = document.getElementById("marksForm");
             formContainer.innerHTML = "";
+
+            if (!data.items || data.items.length === 0) {
+                formContainer.innerHTML = `<div class="set-row" style="text-align:center; padding: 20px;">Tiada set markah dijumpai dalam Google Sheet.</div>`;
+                return;
+            }
 
             data.items.forEach((item) => {
                 const colIdx = item.colIndex;
@@ -515,7 +510,7 @@
                 const row = document.createElement("div");
                 row.className = "set-row";
                 row.innerHTML = `
-                    <div class="text-center"><strong>${item.label} (PER 100)</strong></div>
+                    <div class="text-center"><strong>${item.label.toUpperCase()} (PER 100)</strong></div>
                     <div class="text-center">
                         <input type="number" id="input_col_${colIdx}" class="mark-input" min="0" max="100" value="${scoreObj.mark}" 
                             oninput="updateGradeDisplay(${colIdx})" placeholder="0-100">
@@ -536,6 +531,63 @@
             document.getElementById(`grade_col_${colIdx}`).innerText = calculateGrade(val);
         }
 
+        async function uploadStudentAnswerPdf() {
+            const fileInput = document.getElementById("pdfFileInput");
+            const pdfStatus = document.getElementById("pdfStatus");
+            const uploadBtn = document.getElementById("uploadPdfBtn");
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("Sila pilih fail PDF jawapan pelajar terlebih dahulu!");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            if (file.type !== "application/pdf") {
+                alert("Sila pastikan fail dalam format PDF sahaja!");
+                return;
+            }
+
+            pdfStatus.innerHTML = "⏳ Sedang memuat naik fail PDF ke Google Drive...";
+            if (uploadBtn) uploadBtn.disabled = true;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const arrayBuffer = e.target.result;
+                const bytes = Array.from(new Uint8Array(arrayBuffer));
+
+                const payload = {
+                    matric: currentStudentData.matric,
+                    uploadPdf: true,
+                    fileBytes: bytes
+                };
+
+                try {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "text/plain;charset=utf-8"
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    const res = await response.json();
+                    if (res.status === "success") {
+                        pdfStatus.innerHTML = `✅ Berjaya dimuat naik! <a href="${res.pdfUrl}" target="_blank" class="btn-pdf" style="padding:4px 8px; font-size:12px;">📄 Lihat Jawapan PDF</a>`;
+                        currentStudentData.answerPdfLink = res.pdfUrl;
+                    } else {
+                        pdfStatus.innerHTML = "❌ Gagal memuat naik PDF: " + (res.message || "Ralat tidak diketahui");
+                    }
+                } catch (err) {
+                    pdfStatus.innerHTML = "❌ Ralat semasa memuat naik fail.";
+                    console.error(err);
+                } finally {
+                    if (uploadBtn) uploadBtn.disabled = false;
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
         async function saveMarks() {
             if (!currentStudentData) return;
 
@@ -544,10 +596,7 @@
             saveBtn.disabled = true;
 
             const now = new Date().toLocaleString("ms-MY");
-            let payload = {
-                matric: currentStudentData.matric.toUpperCase(),
-                scores: {}
-            };
+            let scoresData = {};
 
             currentStudentData.items.forEach((item) => {
                 const colIdx = item.colIndex;
@@ -555,7 +604,7 @@
                 const calculatedGrade = calculateGrade(inputVal);
                 const oldTime = currentStudentData.scores[colIdx] ? currentStudentData.scores[colIdx].time : "";
 
-                payload.scores[colIdx] = {
+                scoresData[colIdx] = {
                     mark: inputVal,
                     grade: calculatedGrade,
                     time: inputVal !== "" ? now : oldTime
@@ -566,9 +615,17 @@
                 }
             });
 
+            const payload = {
+                matric: currentStudentData.matric.toUpperCase(),
+                scores: scoresData
+            };
+
             try {
                 const response = await fetch(SCRIPT_URL, {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
                     body: JSON.stringify(payload)
                 });
                 
